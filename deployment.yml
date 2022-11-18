@@ -1,0 +1,39 @@
+apiVersion: apps/v1
+kind: Deployment
+metadata:
+  name: mohan-web-app
+spec:
+  selector:
+    matchLabels:
+      app: clas45-app
+  replicas: 3
+  template:
+    metadata:
+      labels:
+        app: clas45-app
+    spec:
+      containers:
+      - name: mohan-web-app
+        #image: houssemdocker/angular-app:v1 # docker hub image url
+        #image: jilu407/angular-app:1.0.0 # local docker image name 
+        image: jilu407/class-45:1.0
+        resources:
+          limits:
+            memory: "128Mi"
+            cpu: "500m"
+        ports:
+        - containerPort: 80
+---
+apiVersion: v1
+kind: Service
+metadata:
+  name: clas45-app
+spec:
+  selector:
+    app: clas45-app
+  ports:
+  - protocol: TCP 
+    port: 80
+    targetPort: 80
+    nodePort: 32010
+  type: NodePort 
